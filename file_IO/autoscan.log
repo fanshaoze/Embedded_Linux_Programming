@@ -1,0 +1,4 @@
+autoscan: warning: missing AC_CHECK_HEADERS([fcntl.h]) wanted by: 
+	fileIO.c:5
+autoscan: warning: missing AC_CHECK_HEADERS([stdlib.h]) wanted by: 
+	fileIO.c:2
