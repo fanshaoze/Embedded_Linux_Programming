@@ -8,12 +8,12 @@
 int main()
 {
     int fd;
-    unsigned long word;
     ssize_t ret;
-    char buf[10];
-    char *buff = &word;
+    unsigned long var;
+    char buf[20];
+    char *buff = buf;
     //extern int errno;
-    int len = 5;
+    int len = 20;
     char *p1 = "This is a c test code";
     int i = 0;
     fd = open("test.txt",O_RDONLY);
@@ -26,7 +26,7 @@ int main()
         printf("%d open file success\n",fd);
     }
     ret = read(fd,buff,len);
-    while (len !=0 && ret !=0)
+    while (len >0 && ret !=0)
     {
     	printf("ret  %d\n",ret);
     	printf("buf  %s\n",buff);
@@ -41,10 +41,13 @@ int main()
     	len -= ret;
     	buff += ret;
     	ret = read(fd,buff,len);
-
-
     }
-    printf("buf  %s\n",buff);
+    printf("buf  %s\n",buf);
+    buff = &var;
+    pread (fd, buff, 3,2);
+    *(buff+3) = "\0";
+    printf("var  %s\n",&var);
+    pwrite (fd, p1, 3, 0);
     int xd;
     xd = creat("test2.txt",0666);
     if (xd == -1)
@@ -57,7 +60,7 @@ int main()
     }
     for(i = 0;i<21;i++)
     {
-        	printf("%d   ",(strlen(p1)-len));
+        	printf("%d  \n",(strlen(p1)-len));
          	int n;
          	n=write(xd, p1+len, (strlen(p1)-len));
          	printf("n = %d\n",n);
@@ -69,5 +72,10 @@ int main()
         len+=n;
     }
 
+    if (close (fd) == -1)
+	perror ("close");
+    else{
+        printf("close success\n");
+    }
     return 0;
 }
