@@ -71,9 +71,9 @@ int main()
         }
         len+=n;
     }
-
+    ret = truncate("test.txt",15);
     if (close (fd) == -1)
-	perror ("close");
+	   perror ("close");
     else{
         printf("close success\n");
     }
