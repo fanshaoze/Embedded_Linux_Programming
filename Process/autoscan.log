@@ -1,0 +1,6 @@
+autoscan: warning: missing AC_CHECK_HEADERS([fcntl.h]) wanted by: 
+	process.c:5
+autoscan: warning: missing AC_CHECK_HEADERS([stdlib.h]) wanted by: 
+	process.c:2
+autoscan: warning: missing AC_CHECK_HEADERS([unistd.h]) wanted by: 
+	process.c:6
