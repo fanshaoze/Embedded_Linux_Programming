@@ -6,8 +6,15 @@
 #include <unistd.h>  
 #include <string.h>  
 #include <errno.h>     
+void out(){
+  printf("atexit() succeeded\n");
+}
 int main(int argc, char *argv[])
 {  
+  if(atexit(out)){
+    fprintf(stderr, "atexit() failed\n");
+  }
+
    //以NULL结尾的字符串数组的指针，适合包含v的exec函数参数 
 
     // char *arg[] = {"ls", "-a", NULL};  
@@ -32,6 +39,12 @@ int main(int argc, char *argv[])
     }
     else if(!pid){
       printf("I am the child! pid = %d\n",getpid());
+      printf( "1------------execl------------\n" );  
+      if( execl( "/bin/ls", "ls","-l", NULL ) == -1 )  
+      {  
+          perror( "execl error ");  
+          exit(1);  
+      } 
     }
     else if(pid == -1){
       perror("fork");
