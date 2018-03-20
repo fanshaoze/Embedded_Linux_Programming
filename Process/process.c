@@ -37,6 +37,7 @@ int main(int argc, char *argv[])
     // }
     pid_t pid;
     pid = wait(&status);
+    system("ls -al");
     pid = fork();
     if(pid>0){
       printf("I am the parent of pid = %d\n",getpid());  
