@@ -7,9 +7,38 @@
 #include <string.h>  
 #include <errno.h>     
 #include <sys/wait.h>
+#include <sys/stat.h>
+#include <fcntl.h>
 #include <sys/types.h>
+#include <linux/fs.h>
 void out(){
   printf("atexit() succeeded\n");
+}
+int CreateGuardProcess(){
+  pid_t pid;
+  int i;
+  pid = fork();
+  if(pid == -1){
+    return -1;
+  }
+  else if(pid != 0)
+    exit(EXIT_SUCCESS);
+  
+  if(setsid() == -1){
+    return -1;
+  }
+  if(chdir("/") == -1){
+    return -1;
+  }
+  //NR_OPEN is not right,look for adcanced programming page 376
+  //for(i = 0;i<NR_OPEN;i++){
+  for(i = 0;i<1024;i++){
+    close(i);
+  }
+  open("/dev/null",O_RDWR);
+  dup(0);
+  dup(0);
+  return 0;
 }
 int main(int argc, char *argv[])
 {  
@@ -36,6 +65,8 @@ int main(int argc, char *argv[])
     //     }  
     // }
     pid_t pid;
+    pid_t sid;
+    pid_t pgid;
     pid = wait(&status);
     system("ls -al");
     pid = fork();
@@ -44,12 +75,28 @@ int main(int argc, char *argv[])
     }
     else if(!pid){
       printf("I am the child! pid = %d\n",getpid());
+      sid = setsid();
+      if(sid == -1){
+        perror("setsid");
+        return -1;
+      }
+      else{
+        printf("sid %d\n", sid);
+      }
+      pgid = getpgid(0);
+      if(pgid == -1){
+        perror("getpgid");
+      }
+      else{
+        printf("my process group id %d\n", pgid);
+      }
       printf( "1------------execl------------\n" );  
-      if( execl( "/bin/ls", "ls","-l", NULL ) == -1 )  
-      {  
-          perror( "execl error ");  
-          exit(1);  
-      } 
+
+      // if( execl( "/bin/ls", "ls","-l", NULL ) == -1 )  
+      // {  
+      //     perror( "execl error ");  
+      //     exit(1);  
+      // } 
     }
     else if(pid == -1){
       perror("fork");
