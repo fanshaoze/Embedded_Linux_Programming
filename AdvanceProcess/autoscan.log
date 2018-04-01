@@ -1,0 +1,10 @@
+autoscan: warning: missing AC_CHECK_HEADERS([fcntl.h]) wanted by: 
+	advanceProcess.c:12
+autoscan: warning: missing AC_CHECK_HEADERS([stdlib.h]) wanted by: 
+	advanceProcess.c:6
+autoscan: warning: missing AC_CHECK_HEADERS([string.h]) wanted by: 
+	advanceProcess.c:8
+autoscan: warning: missing AC_CHECK_HEADERS([sys/time.h]) wanted by: 
+	advanceProcess.c:16
+autoscan: warning: missing AC_CHECK_HEADERS([unistd.h]) wanted by: 
+	advanceProcess.c:7
