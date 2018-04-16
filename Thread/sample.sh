@@ -1,0 +1,1 @@
+gcc -Wall -O2 -pthread sample.c -o sample
