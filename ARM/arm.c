@@ -4,6 +4,7 @@
 #include <sys/stat.h>
 #include <unistd.h>
 #include <errno.h>
+#include <malloc.h>
 
 struct treasure_map
 {
@@ -67,8 +68,6 @@ void print_chars(int n,char c){
 		free(s);
 	}
 	
-
-
 }
 int test_mmap(){
 	return 0;
@@ -91,7 +90,38 @@ int test_break(){
 	printf("the current break point is %p\n", sbrk(0));
 	return 0;
 }
+int test_mallopt(){
+	int ret = 0;
+	ret = mallopt(M_MMAP_THRESHOLD, 64* 1024);
+	if(!ret){
+		fprintf(stderr, "mallopt,M_MMAP_THRESHOLD,err\n");
+	}
+	else{
+		printf("mallopt,M_MMAP_THRESHOLD success,%lf,\n",M_MMAP_THRESHOLD);
+		return 0;
+	}
+	return 0;
+}
+int test_usable_size(){
+	size_t len = 21;
+	size_t size;
+	char *buf;
 
+	buf = malloc(len);
+	if(!buf){
+		perror("malloc");
+		return -1;
+	}
+	size = malloc_usable_size(buf);
+	printf("%d\n", size);
+	return 0;
+}
+int test_mallinfo(){
+	struct mallinfo m;
+	m = mallinfo();
+	printf("free chunk: %d\n", m.ordblks);
+	return 0;
+}
 int main()
 {
     test_malloc();
@@ -101,6 +131,9 @@ int main()
     test_posix();
     test_break();
     test_mmap();
+    test_mallopt();
+    test_usable_size();
+    test_mallinfo();
     return 0;
 }
 
