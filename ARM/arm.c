@@ -5,6 +5,8 @@
 #include <unistd.h>
 #include <errno.h>
 #include <malloc.h>
+#include <string.h>
+#include <fcntl.h>
 
 struct treasure_map
 {
@@ -122,6 +124,22 @@ int test_mallinfo(){
 	printf("free chunk: %d\n", m.ordblks);
 	return 0;
 }
+int open_sysconf(const char *file,int flags,int mode){
+	const char *etc = "/etc/";
+	char *name;
+	name = alloca(strlen(etc)+strlen(file)+1);
+	strcpy(name,etc);
+	strcpy(name,file);
+	return open(name,flags,mode);
+}
+int test_alloca(){
+	char *song = "songs";
+	char *dup;
+	dup = alloca(strlen(song)+1);
+	strcpy(dup,song);
+	printf("%s\n", dup);
+	return 0;
+}
 int main()
 {
     test_malloc();
@@ -134,6 +152,7 @@ int main()
     test_mallopt();
     test_usable_size();
     test_mallinfo();
+    test_alloca();
     return 0;
 }
 
