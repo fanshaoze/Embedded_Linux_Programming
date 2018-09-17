@@ -1,0 +1,7 @@
+AC_PREREQ(2.57)
+AC_INIT(signal)
+AC_CONFIG_SRCDIR([signal.c])
+#AC_CONFIG_HEADER([config.h])
+AM_INIT_AUTOMAKE(signal, 1.0)
+AC_PROG_CC
+AC_OUTPUT([Makefile])
